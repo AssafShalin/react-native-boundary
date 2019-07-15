@@ -83,13 +83,19 @@ RCT_EXPORT_METHOD(removeAll:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
     NSLog(@"didEnter : %@", region);
-    [self sendEventWithName:@"onEnter" body:region.identifier];
+    dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW,  2 * NSEC_PER_SEC);
+    dispatch_after(delay, dispatch_get_main_queue(), ^(void){
+        [self sendEventWithName:@"onEnter" body:region.identifier];
+    });
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
     NSLog(@"didExit : %@", region);
-    [self sendEventWithName:@"onExit" body:region.identifier];
+    dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW,  2 * NSEC_PER_SEC);
+    dispatch_after(delay, dispatch_get_main_queue(), ^(void){
+        [self sendEventWithName:@"onExit" body:region.identifier];
+    });
 }
 
 + (BOOL)requiresMainQueueSetup
